@@ -1,0 +1,41 @@
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+/tcm.iml
+/.idea/libraries/commons_math3_3_6_1.xml
+/.idea/libraries/jfreechart_1_5_0.xml
+/.idea/libraries/miglayout_4_0_swing.xml
+/.idea/.gitignore
+/.idea/material_theme_project_new.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/toasted-sim.iml
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
+/.idea/workspace.xml
