@@ -1,8 +1,9 @@
 package com.toastedsim;
 
-import main.java.com.toastedsim.geometry.InfiniteCylinder;
-import main.java.com.toastedsim.geometry.PlaneWall;
-import main.java.com.toastedsim.geometry.Sphere;
+
+import com.toastedsim.geometry.InfiniteCylinder;
+import com.toastedsim.geometry.PlaneWall;
+import com.toastedsim.geometry.Sphere;
 
 public class Tests {
     //testing methods in the terminal
