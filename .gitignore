@@ -2,6 +2,8 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.idea/
+*.iml
 
 ### Eclipse ###
 .apt_generated
@@ -27,6 +29,44 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Windows OS ###
+Thumbs.db
+
+### Maven ###
+/target/
+
+### Gradle ###
+/build/
+.gradle/
+
+### Java compiled files ###
+*.class
+
+### Java archives ###
+*.jar
+*.war
+*.ear
+
+### Logs and temp ###
+*.log
+*.tmp
+*.temp
+*.bak
+hs_err_pid*
+
+### Env files ###
+.env
+.env.local
+
+### Coverage reports ###
+coverage/
+*.lcov
+
+### Test results ###
+test-results/
+
+# Specific project files
 /tcm.iml
 /.idea/libraries/commons_math3_3_6_1.xml
 /.idea/libraries/jfreechart_1_5_0.xml

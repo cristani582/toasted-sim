@@ -1,4 +1,4 @@
-package Geometry;
+package com.toastedsim.geometry;
 
 public abstract class GeometryProblem {
     public GeometryProblem() {

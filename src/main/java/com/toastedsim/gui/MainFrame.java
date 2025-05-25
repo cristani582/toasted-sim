@@ -1,4 +1,4 @@
-package GUI;
+package com.toastedsim.gui;
 
 import net.miginfocom.swing.MigLayout;
 

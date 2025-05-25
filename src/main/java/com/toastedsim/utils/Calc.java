@@ -1,4 +1,4 @@
-package Utils;
+package com.toastedsim.utils;
 
 public interface Calc {
     /*

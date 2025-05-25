@@ -1,4 +1,4 @@
-package Geometry;
+package com.toastedsim.geometry;
 
 public interface TransientConduction {
     public Double calculateFourier(Double timeSpent);

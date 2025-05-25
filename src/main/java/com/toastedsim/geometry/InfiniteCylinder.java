@@ -1,6 +1,7 @@
-package Geometry;
+package com.toastedsim.geometry;
 
-import Utils.SpreadSheetReader;
+import com.toastedsim.geometry.GeometryProblem;
+import com.toastedsim.utils.SpreadSheetReader;
 import org.apache.commons.math3.special.BesselJ;
 
 import java.util.ArrayList;

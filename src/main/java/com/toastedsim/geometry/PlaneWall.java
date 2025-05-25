@@ -1,8 +1,8 @@
-package Geometry;
+package com.toastedsim.geometry;
 
-import Utils.SpreadSheetReader;
 
-import java.nio.DoubleBuffer;
+import com.toastedsim.utils.SpreadSheetReader;
+
 import java.util.ArrayList;
 
 public class PlaneWall extends GeometryProblem implements TransientConduction {
