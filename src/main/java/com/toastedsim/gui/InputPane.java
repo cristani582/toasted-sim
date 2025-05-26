@@ -22,12 +22,12 @@ import static java.lang.Math.*;
 
 
 public class InputPane extends JPanel{
-    //public static ArrayList<Double> thetaStarFunction = new ArrayList<>();
-    //public static ArrayList<Double> dimensionProblemVariable = new ArrayList<>();
     private boolean isPlaneWall = false;
     private boolean isInfiniteCylinder = false;
     private boolean isSphere = false;
+
     private static DecimalFormat df2 = new DecimalFormat("#.##");
+
     private JLabel lcLabel = new JLabel("<html>L<sub>C</sub> [m]: </html>");
     private JLabel kLabel = new JLabel("<html>k [W/(m.K)]: </html>");
     private JLabel rhoLabel = new JLabel("<html>ρ [kg/m<sup>3</sup>]: </html>");
@@ -155,6 +155,8 @@ public class InputPane extends JPanel{
     }
 
 
+
+
     //Listeners
     private class TextHandler implements ActionListener {
         public void actionPerformed(ActionEvent event) {
@@ -265,7 +267,7 @@ public class InputPane extends JPanel{
                     }
                 }
             }
-            }
+        }
     }
 
     private class ComboBoxHandler implements ItemListener {
@@ -399,8 +401,8 @@ public class InputPane extends JPanel{
                         fourier = planeWall.calculateFourier(timeSpent);
 
                         for (double dimensionProblemPoints = -1.0; dimensionProblemPoints <= 1.0; dimensionProblemPoints += 0.01) {
-                            Double s1 = planeWall.biotConstants.get(0);
-                            Double c1 = planeWall.biotConstants.get(1);
+                            Double s1 = planeWall.getBiotConstants().get(0);
+                            Double c1 = planeWall.getBiotConstants().get(1);
                             fourier = planeWall.calculateFourier(timeSpent);
                             double theta = c1*Math.cos(s1*dimensionProblemPoints)*Math.exp(-s1*s1*fourier);
                             ChartsPane.series0.add(dimensionProblemPoints, theta);
@@ -412,8 +414,8 @@ public class InputPane extends JPanel{
                         temperatureProblem = infiniteCylinder.calculateSpatialEffectsTemperatureProblem(h, dimensionProblem, timeSpent, temperatureInitial, temperatureInfinite);
 
                         for (double dimensionProblemPoints = -1.0; dimensionProblemPoints <= 1.0; dimensionProblemPoints += 0.01) {
-                            Double s1 = infiniteCylinder.biotConstants.get(0);
-                            Double c1 = infiniteCylinder.biotConstants.get(1);
+                            Double s1 = infiniteCylinder.getBiotConstants().get(0);
+                            Double c1 = infiniteCylinder.getBiotConstants().get(1);
                             fourier = infiniteCylinder.calculateFourier(timeSpent);
 
                             //creating bessel function Jo
@@ -436,8 +438,8 @@ public class InputPane extends JPanel{
                         temperatureProblem = sphere.calculateSpatialEffectsTemperatureProblem(h, dimensionProblem, timeSpent, temperatureInitial, temperatureInfinite);
 
                         for (double dimensionProblemPoints = -1.0; dimensionProblemPoints <= 1.0; dimensionProblemPoints += 0.01) {
-                            Double s1 = sphere.biotConstants.get(0);
-                            Double c1 = sphere.biotConstants.get(1);
+                            Double s1 = sphere.getBiotConstants().get(0);
+                            Double c1 = sphere.getBiotConstants().get(1);
                             fourier = sphere.calculateFourier(timeSpent);
                             double theta = c1 * (Math.sin(s1 * dimensionProblemPoints) / (s1 * dimensionProblemPoints)) * Math.exp(-s1 * s1 * fourier);
                             ChartsPane.series0.add(dimensionProblemPoints, theta);

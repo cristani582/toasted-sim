@@ -10,7 +10,7 @@ public class PlaneWall extends GeometryProblem implements TransientConduction {
     private Double k;
     private Double rho;
     private Double cp;
-    public ArrayList<Double> biotConstants = new ArrayList<>();
+    private ArrayList<Double> biotConstants = new ArrayList<>();
 
     public PlaneWall(Double length, Double k, Double rho, Double cp) {
         this.length = length;
@@ -23,7 +23,7 @@ public class PlaneWall extends GeometryProblem implements TransientConduction {
 
     @Override
     public Double calculateFourier(Double timeSpent) {
-        return (calculateAlpha(k, rho, cp)*timeSpent)/(Math.pow(length, 2));
+        return (calculateThermalDiffusivity(k, rho, cp)*timeSpent)/(Math.pow(length, 2));
     }
 
     @Override
@@ -44,8 +44,8 @@ public class PlaneWall extends GeometryProblem implements TransientConduction {
 
     @Override
     public Double lumpedCapacitanceTimeSpent(Double h, Double temperatureProblem, Double temperatureInitial, Double temperatureInfinite) {
-        //defining thetaStar
-        Double thetaStar = thetaStar(temperatureProblem, temperatureInitial, temperatureInfinite);
+        //defining normalizedTemperature
+        Double thetaStar = normalizedTemperature(temperatureProblem, temperatureInitial, temperatureInfinite);
 
         return (-(Math.log(thetaStar))*(rho*length*cp)/(1*h));
     }
@@ -93,7 +93,7 @@ public class PlaneWall extends GeometryProblem implements TransientConduction {
             double minusS1Square = -(s1*s1);
             Double c1 = biotConstants.get(1);
             Double cosS1x = Math.cos(s1*(dimensionProblem/length));
-            Double thetaStar = thetaStar(temperatureProblem, temperatureInitial, temperatureInfinite);
+            Double thetaStar = normalizedTemperature(temperatureProblem, temperatureInitial, temperatureInfinite);
             Double fourier = Math.log((thetaStar)/(c1*cosS1x))*(1/(minusS1Square));
 
             timeSpent = (rho*cp*fourier*length*length)/(k); // time spent
@@ -116,5 +116,9 @@ public class PlaneWall extends GeometryProblem implements TransientConduction {
 
     public Double getCp() {
         return cp;
+    }
+
+    public ArrayList<Double> getBiotConstants() {
+        return biotConstants;
     }
 }

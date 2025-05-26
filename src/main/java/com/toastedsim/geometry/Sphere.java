@@ -11,7 +11,7 @@ public class Sphere extends GeometryProblem implements TransientConduction {
     private Double k;
     private Double rho;
     private Double cp;
-    public ArrayList<Double> biotConstants = new ArrayList<>();
+    private ArrayList<Double> biotConstants = new ArrayList<>();
 
     public Sphere(Double radius, Double k, Double rho, Double cp) {
         this.radius = radius;
@@ -22,15 +22,9 @@ public class Sphere extends GeometryProblem implements TransientConduction {
             throw new IllegalArgumentException("no parameter can be null or less than zero");
     }
 
-
-    @Override
-    public Double thetaStar(Double temperature, Double temperatureInitial, Double temperatureInfinite) {
-        return (temperature - temperatureInfinite)/(temperatureInitial - temperatureInfinite);
-    }
-
     @Override
     public Double calculateFourier(Double timeSpent) {
-        return calculateAlpha(k, rho, cp)/(Math.pow(radius, 2));
+        return calculateThermalDiffusivity(k, rho, cp)/(Math.pow(radius, 2));
     }
 
     @Override
@@ -45,13 +39,13 @@ public class Sphere extends GeometryProblem implements TransientConduction {
     }
 
     @Override
-    public Double lumpedCapacitanceTemperature(Double h, Double timeSpent, Double temperatureInitial, Double temperatureInfinite) {
-        return ((Math.exp(-(((h*3)/(rho*radius*cp))*timeSpent))*(temperatureInitial - temperatureInfinite))+temperatureInfinite);
+    public Double lumpedCapacitanceTemperature(Double h, Double timeSpent, Double initialTemperature, Double temperatureInfinite) {
+        return ((Math.exp(-(((h*3)/(rho*radius*cp))*timeSpent))*(initialTemperature - temperatureInfinite))+temperatureInfinite);
     }
     @Override
-    public Double lumpedCapacitanceTimeSpent(Double h, Double temperatureProblem, Double temperatureInitial, Double temperatureInfinite) {
-        //defining thetaStar
-        Double thetaStar = thetaStar(temperatureProblem, temperatureInitial, temperatureInfinite);
+    public Double lumpedCapacitanceTimeSpent(Double h, Double temperatureProblem, Double initialTemperature, Double temperatureInfinite) {
+        //defining normalizedTemperature
+        Double thetaStar = this.normalizedTemperature(temperatureProblem, initialTemperature, temperatureInfinite);
 
         return (-(Math.log(thetaStar))*(rho*radius*cp)/(3*h));
     }
@@ -67,11 +61,11 @@ public class Sphere extends GeometryProblem implements TransientConduction {
     }
 
     @Override
-    public Double calculateSpatialEffectsTemperatureProblem(Double h, Double dimensionProblem, Double timeSpent, Double temperatureInitial, Double temperatureInfinite) {
+    public Double calculateSpatialEffectsTemperatureProblem(Double h, Double dimensionProblem, Double timeSpent, Double initialTemperature, Double temperatureInfinite) {
         Double temperatureProblem;
         Double biot = calculateBiot(h);
         if(biot < 0.01){
-            temperatureProblem = lumpedCapacitanceTemperature(h,timeSpent,temperatureInitial,temperatureInfinite);
+            temperatureProblem = lumpedCapacitanceTemperature(h,timeSpent,initialTemperature,temperatureInfinite);
             System.out.println("Very small Biot number; LCA was used instead of SEA.");
         }
         else{
@@ -86,17 +80,17 @@ public class Sphere extends GeometryProblem implements TransientConduction {
             Double s1Fo = -(s1*s1)*fourier;
             Double expS1Fo = Math.exp(s1Fo);
 
-            temperatureProblem = (c1*sinS1rDividedByArgument*expS1Fo*(temperatureInitial-temperatureInfinite))+temperatureInfinite; // temperature problem solution
+            temperatureProblem = (c1*sinS1rDividedByArgument*expS1Fo*(initialTemperature-temperatureInfinite))+temperatureInfinite; // temperature problem solution
         }
         return temperatureProblem;
     }
 
     @Override
-    public Double calculateSpatialEffectsTimeSpent(Double h, Double dimensionProblem, Double temperatureProblem, Double temperatureInitial, Double temperatureInfinite) {
+    public Double calculateSpatialEffectsTimeSpent(Double h, Double dimensionProblem, Double temperatureProblem, Double initialTemperature, Double temperatureInfinite) {
         Double timeSpent;
         Double biot = calculateBiot(h);
         if(biot < 0.01){
-            timeSpent = lumpedCapacitanceTimeSpent(h, temperatureProblem, temperatureInitial, temperatureInfinite);
+            timeSpent = lumpedCapacitanceTimeSpent(h, temperatureProblem, initialTemperature, temperatureInfinite);
             System.out.println("Very small Biot number; LCA was used instead of SEA.");
         }else{
             calculateConstants(biot);
@@ -107,7 +101,7 @@ public class Sphere extends GeometryProblem implements TransientConduction {
             Double sinArgument = s1*(dimensionProblem/radius);
             Double sinS1rDividedByArgument = Math.sin(sinArgument)/sinArgument;
 
-            Double thetaStar = thetaStar(temperatureProblem, temperatureInitial, temperatureInfinite);
+            Double thetaStar = this.normalizedTemperature(temperatureProblem, initialTemperature, temperatureInfinite);
             Double fourier = Math.log((thetaStar)/(c1*sinS1rDividedByArgument))*(1/(minusS1Square));
 
             timeSpent = (rho*cp*fourier*radius*radius)/(k); // time spent
@@ -129,5 +123,9 @@ public class Sphere extends GeometryProblem implements TransientConduction {
 
     public Double getCp() {
         return cp;
+    }
+
+    public ArrayList<Double> getBiotConstants() {
+        return biotConstants;
     }
 }

@@ -5,6 +5,7 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,8 +21,11 @@ public class SpreadSheetReader implements Calc {
         ArrayList<Double> c1ArrayList = new ArrayList<>();
 
         try{
-            File file = new File(spreadSheetPath);
-            Scanner scanner = new Scanner(file);
+            InputStream input = getClass().getClassLoader().getResourceAsStream(spreadSheetPath);
+            if (input == null) {
+                throw new FileNotFoundException("Arquivo não encontrado no classpath: " + spreadSheetPath);
+            }
+            Scanner scanner = new Scanner(input);
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine().trim(); // Trim any leading/trailing whitespace

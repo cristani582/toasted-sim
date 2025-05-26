@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
         InputPane inputPane = new InputPane( lcInput,  kInput,  rhoInput,  cpInput,  hInput,
                  temperatureProblemInput, temperatureInitialInput,  temperatureInfiniteInput,
                  dimensionProblemInput,  timeSpentInput);
+
         ChartsPane chartsPane = new ChartsPane();
         add(inputPane, "grow, alignx center, aligny top, wrap");
         add(chartsPane);

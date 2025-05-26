@@ -1,6 +1,6 @@
 package com.toastedsim.geometry;
 
-import com.toastedsim.geometry.GeometryProblem;
+
 import com.toastedsim.utils.SpreadSheetReader;
 import org.apache.commons.math3.special.BesselJ;
 
@@ -9,37 +9,27 @@ import java.util.ArrayList;
 
 public class InfiniteCylinder extends GeometryProblem implements TransientConduction {
     private Double radius;
-    private Double k;
-    private Double rho;
-    private Double cp;
-    public ArrayList<Double> biotConstants = new ArrayList<>();
+    private Double thermalConductivity;
+    private Double density;
+    private Double specificHeat;
+    private ArrayList<Double> biotConstants = new ArrayList<>();
 
-    public InfiniteCylinder(Double radius, Double k, Double rho, Double cp) {
+    public InfiniteCylinder(Double radius, Double thermalConductivity, Double density, Double specificHeat) {
         this.radius = radius;
-        this.k = k;
-        this.rho = rho;
-        this.cp = cp;
-        this.radius = radius;
-        this.k = k;
-        this.rho = rho;
-        this.cp = cp;
-        if (radius <= 0 || k <= 0 || rho <= 0 || cp <= 0)
+        this.thermalConductivity = thermalConductivity;
+        this.density = density;
+        this.specificHeat = specificHeat;
+        if (radius <= 0 || thermalConductivity <= 0 || density <= 0 || specificHeat <= 0)
             throw new IllegalArgumentException("no parameter can be null or less than zero");
-    }
-
-
-    @Override
-    public Double thetaStar(Double temperature, Double temperatureInitial, Double temperatureInfinite) {
-        return (temperature - temperatureInfinite)/(temperatureInitial - temperatureInfinite);
     }
 
     @Override
     public Double calculateFourier(Double timeSpent) {
-        return calculateAlpha(k, rho, cp)/(Math.pow(radius, 2));
+        return calculateThermalDiffusivity(thermalConductivity, density, specificHeat)/(Math.pow(radius, 2));
     }
     @Override
     public Double calculateBiot(Double h) {
-        Double biot = (h*radius)/k;
+        double biot = (h*radius)/thermalConductivity;
         if(biot<0.1){
             System.out.println("[CAN USE LCA] biot = "+biot);
         }else{
@@ -50,15 +40,15 @@ public class InfiniteCylinder extends GeometryProblem implements TransientConduc
 
     @Override
     public Double lumpedCapacitanceTemperature(Double h, Double timeSpent, Double temperatureInitial, Double temperatureInfinite) {
-        return ((Math.exp(-(((h*2)/(rho*radius*cp))*timeSpent))*(temperatureInitial - temperatureInfinite))+temperatureInfinite); //Temperature problem
+        return ((Math.exp(-(((h*2)/(density*radius*specificHeat))*timeSpent))*(temperatureInitial - temperatureInfinite))+temperatureInfinite); //Temperature problem
     }
 
     @Override
     public Double lumpedCapacitanceTimeSpent(Double h, Double temperatureProblem, Double temperatureInitial, Double temperatureInfinite) {
-        //defining thetaStar
-        Double thetaStar = thetaStar(temperatureProblem, temperatureInitial, temperatureInfinite);
+        //defining normalizedTemperature
+        Double thetaStar = this.normalizedTemperature(temperatureProblem, temperatureInitial, temperatureInfinite);
 
-        return (-(Math.log(thetaStar))*(rho*radius*cp)/(2*h)); //Time spent
+        return (-(Math.log(thetaStar))*(density*radius*specificHeat)/(2*h)); //Time spent
     }
 
     @Override
@@ -85,6 +75,7 @@ public class InfiniteCylinder extends GeometryProblem implements TransientConduc
 
             //creating bessel function Jo
             BesselJ bessel = new BesselJ(0); // Jn, n = 0  [Jo]
+
             //solving Jo(s1.r*)
             Double besselS1r = bessel.value(s1*(dimensionProblem/radius)); // Jo(s1.r*)
 
@@ -115,10 +106,10 @@ public class InfiniteCylinder extends GeometryProblem implements TransientConduc
             //solving Jo(s1.r*)
             Double besselS1r = bessel.value(s1*(dimensionProblem/radius)); // Jo(s1.r*)
 
-            Double thetaStar = thetaStar(temperatureProblem, temperatureInitial, temperatureInfinite);
+            Double thetaStar = this.normalizedTemperature(temperatureProblem, temperatureInitial, temperatureInfinite);
             Double fourier = Math.log((thetaStar)/(c1*besselS1r))*(1/(minusS1Square));
 
-            timeSpent = (rho*cp*fourier*radius*radius)/(k); // time spent
+            timeSpent = (density*specificHeat*fourier*radius*radius)/(thermalConductivity); // time spent
         }
         return timeSpent;
     }
@@ -128,14 +119,18 @@ public class InfiniteCylinder extends GeometryProblem implements TransientConduc
     }
 
     public Double getK() {
-        return k;
+        return thermalConductivity;
     }
 
     public Double getRho() {
-        return rho;
+        return density;
     }
 
     public Double getCp() {
-        return cp;
+        return specificHeat;
+    }
+
+    public ArrayList<Double> getBiotConstants() {
+        return biotConstants;
     }
 }
