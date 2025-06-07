@@ -55,6 +55,8 @@ These libraries are *not included* in this repository; they are automatically do
 For full license texts, see the [`licenses/`](./licenses) folder in this repository.
 
 - JFreeChart official site: [https://www.jfree.org/jfreechart/](https://www.jfree.org/jfreechart/)
+- MigLayout official site: [http://www.miglayout.com/](http://www.miglayout.com/)
+- Apache Commons Math official site: [https://commons.apache.org/proper/commons-math/](https://commons.apache.org/proper/commons-math/)
 
 ---
 
