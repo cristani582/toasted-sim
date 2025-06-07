@@ -9,7 +9,7 @@ ToastedSim is a compact Java-based simulator for transient heat conduction probl
 ## 🚀 Features
 
 - ✅ Lumped Capacitance Analysis (LCA)
-- ✅ Spatial Effects Analysis (SEA)
+- ✅ Spatial Effects Approach
 - ✅ Biot Number Calculation
 - ✅ Fourier Number Calculation
 - ✅ Much more to support classic heat transfer problems
@@ -42,6 +42,21 @@ ToastedSim is a compact Java-based simulator for transient heat conduction probl
 - Researchers and educators needing a lightweight, easy-to-use heat transfer tool
 
 ---
+## ⚙️ Third-Party Libraries and Licenses
+
+This project uses the following third-party libraries, managed via Maven dependencies:
+
+- **Commons Math** — MIT License
+- **MiGLayout** — BSD License
+- **JFreeChart** — GNU Lesser General Public License v3 (LGPL v3)
+
+These libraries are *not included* in this repository; they are automatically downloaded by Maven during the build process.
+
+For full license texts, see the [`licenses/`](./licenses) folder in this repository.
+
+- JFreeChart official site: [https://www.jfree.org/jfreechart/](https://www.jfree.org/jfreechart/)
+
+---
 
 ## 📚 Fun Fact
 
@@ -50,4 +65,3 @@ This simulator covers many key examples from Chapter 5 of *Fundamentals of Heat 
 ---
 
 Feel free to explore, contribute, or suggest features!
-
